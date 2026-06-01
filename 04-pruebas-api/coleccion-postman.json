@@ -1,0 +1,162 @@
+{
+  "info": {
+    "name": "[NombreColeccion]-PruebasAPI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "item": [
+        {
+          "name": "Login exitoso",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/{{endpoint_login}}",
+            "body": { "mode": "raw", "raw": "{\n  \"usuario\": \"{{usuario_valido}}\",\n  \"clave\": \"{{clave_valida}}\"\n}" }
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('Status esperado login exitoso', function () { pm.response.to.have.status(Number(pm.environment.get('status_login_ok'))); });",
+            "pm.test('Respuesta no vacia', function () { pm.expect(pm.response.text()).to.not.be.empty; });",
+            "pm.test('Contiene token o sesion', function () { const r = pm.response.json(); pm.expect(r).to.have.any.keys('[campo_token]','[campo_sesion]','[campo_data]'); });"
+          ] } }]
+        },
+        {
+          "name": "Login fallido",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/{{endpoint_login}}",
+            "body": { "mode": "raw", "raw": "{\n  \"usuario\": \"{{usuario_valido}}\",\n  \"clave\": \"{{clave_invalida}}\"\n}" }
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('Status login fallido', function () { pm.response.to.have.status(Number(pm.environment.get('status_login_fail'))); });",
+            "pm.test('Mensaje de error presente', function () { pm.expect(pm.response.text()).to.include('[texto_error_login]'); });"
+          ] } }]
+        },
+        {
+          "name": "Login sin datos",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/{{endpoint_login}}",
+            "body": { "mode": "raw", "raw": "{}" }
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('Status login sin datos', function () { pm.response.to.have.status(Number(pm.environment.get('status_login_bad_request'))); });"
+          ] } }]
+        }
+      ]
+    },
+    {
+      "name": "Maestro",
+      "item": [
+        {
+          "name": "Listar registros",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{auth_token}}" }],
+            "url": "{{base_url}}/{{endpoint_maestro_list}}"
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('Status listar maestro', function () { pm.response.to.have.status(200); });",
+            "pm.test('Lista no vacia o paginada', function () { const r = pm.response.json(); pm.expect(Array.isArray(r) || Array.isArray(r['[campo_items]'])).to.eql(true); });"
+          ] } }]
+        },
+        {
+          "name": "Crear registro valido",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "url": "{{base_url}}/{{endpoint_maestro_create}}",
+            "body": { "mode": "raw", "raw": "{\n  \"[campo_codigo]\": \"{{codigo_valido}}\",\n  \"[campo_nombre]\": \"{{nombre_valido}}\"\n}" }
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('Status crear maestro', function () { pm.response.to.have.status(Number(pm.environment.get('status_maestro_create_ok'))); });",
+            "pm.test('Respuesta contiene id', function () { const r = pm.response.json(); pm.expect(r).to.have.property('[campo_id]'); });"
+          ] } }]
+        },
+        {
+          "name": "Crear registro invalido",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "url": "{{base_url}}/{{endpoint_maestro_create}}",
+            "body": { "mode": "raw", "raw": "{\n  \"[campo_codigo]\": \"\",\n  \"[campo_nombre]\": \"\"\n}" }
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('Status crear invalido', function () { pm.response.to.have.status(Number(pm.environment.get('status_maestro_bad_request'))); });"
+          ] } }]
+        },
+        {
+          "name": "Editar registro",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "url": "{{base_url}}/{{endpoint_maestro_update}}/{{id_maestro}}",
+            "body": { "mode": "raw", "raw": "{\n  \"[campo_nombre]\": \"{{nombre_editado}}\"\n}" }
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('Status editar maestro', function () { pm.response.to.have.status(200); });"
+          ] } }]
+        },
+        {
+          "name": "Eliminar registro",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{auth_token}}" }],
+            "url": "{{base_url}}/{{endpoint_maestro_delete}}/{{id_maestro}}"
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('Status eliminar maestro', function () { pm.expect([200,204]).to.include(pm.response.code); });"
+          ] } }]
+        }
+      ]
+    },
+    {
+      "name": "Transaccional",
+      "item": [
+        {
+          "name": "Registrar transaccion valida",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "url": "{{base_url}}/{{endpoint_transaccional_create}}",
+            "body": { "mode": "raw", "raw": "{\n  \"[campo_fk_maestra]\": \"{{id_maestra}}\",\n  \"[campo_monto]\": \"{{monto_valido}}\"\n}" }
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('Status transaccion valida', function () { pm.response.to.have.status(Number(pm.environment.get('status_trans_ok'))); });",
+            "pm.test('Contiene confirmacion', function () { const r = pm.response.json(); pm.expect(r).to.have.any.keys('[campo_id_transaccion]','[campo_estado]'); });"
+          ] } }]
+        },
+        {
+          "name": "Registrar transaccion invalida",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "url": "{{base_url}}/{{endpoint_transaccional_create}}",
+            "body": { "mode": "raw", "raw": "{\n  \"[campo_fk_maestra]\": \"{{id_maestra}}\",\n  \"[campo_monto]\": \"{{monto_invalido}}\"\n}" }
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('Status transaccion invalida', function () { pm.response.to.have.status(Number(pm.environment.get('status_trans_bad_request'))); });"
+          ] } }]
+        }
+      ]
+    }
+  ]
+}
