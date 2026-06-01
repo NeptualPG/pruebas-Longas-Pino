@@ -6,6 +6,8 @@ Guia operativa para planificar, ejecutar y documentar pruebas de software sobre 
 2. Modulo maestro CRUD
 3. Modulo transaccional
 
+Este repositorio ya esta separado por fases. La documentacion base esta creada, pero varios artefactos todavia tienen placeholders o estan pendientes de cierre final.
+
 ## Tabla de contenido
 
 1. Descripcion general de la actividad
@@ -77,6 +79,16 @@ Se debe conservar esta estructura minima:
 - `06-seguridad/`
 - `07-entrega-final/`
 
+Estado actual resumido:
+
+- `01-planificacion/`: documentos base creados.
+- `02-pruebas-unitarias/`: clases de prueba creadas, pero aun con placeholders.
+- `03-pruebas-funcionales/`: suite y casos base creados; evidencias incompletas.
+- `04-pruebas-api/`: coleccion, environment, reporte y capturas base creadas.
+- `05-base-de-datos/`: scripts y capturas base creadas; falta adaptar nombres reales.
+- `06-seguridad/`: guia, reporte y capturas base creadas.
+- `07-entrega-final/`: reporte final y screencast parcial; falta el video de presentacion y los reportes de bugs completos.
+
 Convencion de commits por fase:
 
 - [FASE-1] Plan de pruebas y criterios de aceptacion
@@ -111,6 +123,10 @@ Minimos:
 - Al menos 5 metodos por clase.
 - Al menos 20 pruebas unitarias totales.
 
+Nota actual:
+
+- Las clases Java existen, pero todavia usan ejemplos y placeholders en vez de la logica real del sistema.
+
 ## 6. Fase 3 - Pruebas funcionales con Selenium IDE
 
 Entregables:
@@ -118,6 +134,10 @@ Entregables:
 - `03-pruebas-funcionales/selenium-suite.side`
 - `03-pruebas-funcionales/casos-prueba-funcionales.md`
 - Evidencias por caso en `03-pruebas-funcionales/evidencias/`.
+
+Nota actual:
+
+- La separacion por carpeta ya existe, pero faltan capturas por cada caso ejecutado.
 
 ## 7. Fase 4 - Pruebas de API con Postman
 
@@ -128,6 +148,10 @@ Minimo esperado:
 	- `04-pruebas-api/coleccion-postman.json`
 	- `04-pruebas-api/environment-postman.json`
 
+Nota actual:
+
+- La coleccion existe, pero sigue usando variables y endpoints genericos.
+
 ## 8. Fase 5 - Pruebas de base de datos con MySQL Workbench
 
 Orden de ejecucion:
@@ -135,6 +159,10 @@ Orden de ejecucion:
 1. `05-base-de-datos/datos-prueba.sql`
 2. `05-base-de-datos/pruebas-integridad.sql`
 3. `05-base-de-datos/pruebas-transacciones.sql`
+
+Nota actual:
+
+- Los scripts estan separados, pero aun usan placeholders y necesitan adaptacion al esquema real.
 
 ## 9. Fase 6 - Pruebas de seguridad con OWASP ZAP
 

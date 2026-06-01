@@ -9,6 +9,8 @@ Pruebas unitarias del módulo de autenticación para validar:
 - Usuario inactivo/deshabilitado
 - Generación de código 2FA
 
+Nota actual: esta carpeta contiene una base de pruebas de ejemplo y la versión Java es la que debe alinearse con el requisito de la guia.
+
 ## Estructura
 
 ```
