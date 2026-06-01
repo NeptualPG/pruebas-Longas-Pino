@@ -1,0 +1,28 @@
+# .gitignore para Fase 2: Pruebas Unitarias
+
+# Caché de pytest
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pyo
+*.pyd
+
+# Reportes de cobertura
+.coverage
+htmlcov/
+coverage.xml
+
+# Reportes de tests
+evidencias/
+*.html
+
+# IDE y Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Otros
+.DS_Store
+*.log

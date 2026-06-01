@@ -1,0 +1,12 @@
+# Dependencias para Fase 2: Pruebas Unitarias - JAANSTYLE
+
+# Framework de testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-html>=3.2.0
+
+# Utilidades
+python-dotenv>=1.0.0
+
+# Nota: El proyecto Tienda-de-ropa usa solo módulos de stdlib (http.server, sqlite3, smtplib, etc.)
+# No requiere dependencias externas además de pytest
