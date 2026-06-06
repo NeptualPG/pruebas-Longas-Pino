@@ -1,147 +1,285 @@
-# Fase 2: Pruebas Unitarias - JAANSTYLE
+# Fase 2: Pruebas Unitarias - Jeanstyle
 
 ## Descripción
 
-Pruebas unitarias del módulo de autenticación para validar:
-- Credenciales correctas
-- Contraseña incorrecta
-- Usuario bloqueado
-- Usuario inactivo/deshabilitado
-- Generación de código 2FA
+Pruebas unitarias ejecutadas sobre las funcionalidades principales implementadas en el sistema Jeanstyle.
 
-Nota actual: esta carpeta contiene una base de pruebas de ejemplo y la versión Java es la que debe alinearse con el requisito de la guia.
+Se validan:
+
+* Inicio de sesión de usuarios.
+* Gestión de productos (CRUD).
+* Gestión de pedidos (Orders).
+* Integridad básica de operaciones sobre la base de datos.
+
+---
 
 ## Estructura
 
-```
+```text
 02-pruebas-unitarias/
-├── src/test/python/
-│   ├── test_auth.py          # Tests del módulo autenticación
-│   └── conftest.py           # Configuración de pytest
-├── evidencias/               # Reportes de ejecución
-├── README.md                 # Esta documentación
-└── requirements.txt          # Dependencias
+├── tests/
+│   ├── test_auth.py
+│   ├── test_productos.py
+│   └── test_orders.py
+│
+├── evidencias/
+│   ├── test_report.html
+│   ├── coverage_report.html
+│   └── consola-ejecucion.png
+│
+├── requirements.txt
+└── README.md
 ```
+
+---
 
 ## Pruebas Incluidas
 
 ### 1. TestLoginExitoso
-**CA-06:** Validar login exitoso con credenciales correctas
-- Verifica que el login retorna True
-- Valida generación de código 2FA
-- Comprueba que token es de 6 dígitos
 
-### 2. TestPasswordIncorrecta  
-**CA-08:** Validar rechazo con password incorrecta
-- Verifica que login retorna False
-- Valida mensaje "Credenciales inválidas"
-- Confirma que NO se genera 2FA
+**Objetivo**
 
-### 3. TestUsuarioBloqueado
-**CA-09:** Validar bloqueo después de 3 intentos fallidos
-- Ejecuta 3 intentos fallidos
-- Verifica que usuario está bloqueado (blocked=1)
-- Confirma mensaje de bloqueo
+Validar autenticación correcta de usuario registrado.
 
-### 4. TestUsuarioInactivo
-**CA-10:** Validar rechazo de usuario deshabilitado
-- Intenta login con usuario inactivo
-- Verifica rechazo de acceso
-- Confirma que NO se genera 2FA
+**Validaciones**
 
-### 5. TestGeneracion2FA
-**CA-11:** Validar generación de código 2FA
-- Comprueba código de 6 dígitos
-- Valida que es numérico
-- Verifica aleatoriedad en múltiples llamadas
+* Usuario existe.
+* Contraseña correcta.
+* Login exitoso.
+* Se crea sesión válida.
+
+---
+
+### 2. TestPasswordIncorrecta
+
+**Objetivo**
+
+Validar rechazo de credenciales inválidas.
+
+**Validaciones**
+
+* Login rechazado.
+* Mensaje de error.
+* No se crea sesión.
+
+---
+
+### 3. TestCrearProducto
+
+**Objetivo**
+
+Validar creación de productos.
+
+**Validaciones**
+
+* Registro insertado correctamente.
+* ID generado.
+* Persistencia en base de datos.
+
+---
+
+### 4. TestEditarProducto
+
+**Objetivo**
+
+Validar actualización de productos.
+
+**Validaciones**
+
+* Modificación exitosa.
+* Datos actualizados en consulta posterior.
+
+---
+
+### 5. TestEliminarProducto
+
+**Objetivo**
+
+Validar eliminación de productos.
+
+**Validaciones**
+
+* Registro eliminado.
+* No aparece en listados posteriores.
+
+---
+
+### 6. TestCrearPedido
+
+**Objetivo**
+
+Validar creación de pedidos.
+
+**Validaciones**
+
+* Pedido insertado.
+* Relación con producto válida.
+* Estado almacenado correctamente.
+
+---
+
+### 7. TestPedidoInvalido
+
+**Objetivo**
+
+Validar restricciones de negocio.
+
+**Validaciones**
+
+* No permite registrar pedidos incompletos.
+* Retorna error controlado.
+
+---
 
 ## Instalación de Dependencias
 
 ```bash
-# Activar environment Python 3.12
 conda activate python312
 
-# Instalar pytest
 pip install pytest
-
-# Opcional: instalar pytest-cov para cobertura
+pip install pytest-html
 pip install pytest-cov
 ```
 
-## Ejecución de Pruebas
+---
 
-### Ejecutar todos los tests
+## Ejecución
+
+### Ejecutar todas las pruebas
+
 ```bash
-cd pruebas-Longas-Pino/02-pruebas-unitarias
-pytest src/test/python/test_auth.py -v
+pytest -v
 ```
 
-### Ejecutar test específico
+### Ejecutar autenticación
+
 ```bash
-pytest src/test/python/test_auth.py::TestLoginExitoso::test_login_exitoso -v
+pytest tests/test_auth.py -v
 ```
 
-### Ver cobertura de código
+### Ejecutar productos
+
 ```bash
-pytest src/test/python/test_auth.py --cov=../../Tienda-de-ropa/controllers/auth --cov-report=html
+pytest tests/test_productos.py -v
 ```
 
-## Requisitos Previos
+### Ejecutar pedidos
 
-1. **Base de datos inicializada**
-   - Usar `Tienda-de-ropa/db/database.sqlite`
-   - Ejecutar `db/init_db.py` si es necesario
+```bash
+pytest tests/test_orders.py -v
+```
 
-2. **Usuario de prueba creado**
-   - Email: `usuario.prueba@example.com`
-   - Password: `TestPassword123!`
-   - Estado: enabled=1
+### Ejecutar con cobertura
 
-3. **Ambiente Python**
-   - Python 3.12+
-   - pytest instalado
-   - Proyecto Tienda-de-ropa accesible
-
-## Mapeo a Criterios de Aceptación
-
-| Test | CA | Descripción |
-|------|----|----|
-| test_login_exitoso | CA-06 | Login con credenciales correctas |
-| test_password_incorrecta | CA-08 | Rechazo con password incorrecta |
-| test_usuario_bloqueado | CA-09 | Bloqueo después de 3 intentos |
-| test_usuario_inactivo | CA-10 | Rechazo de usuario inactivo |
-| test_generacion_2fa | CA-11 | Generación de código 2FA |
-| test_generacion_codigo_2fa | CA-11 | Validación adicional de 2FA |
-
-## Reportes
-
-Los reportes de ejecución se guardan en:
-- `evidencias/test_report.txt` - Resumen de tests
-- `evidencias/coverage_report.html` - Cobertura de código
-
-## Próximos Pasos
-
-Después de validar estos tests:
-
-1. **Fase 3**: Pruebas Funcionales con Selenium
-   - Automatizar flujos en navegador
-   - Validar UI e interacción
-
-2. **Fase 4**: Pruebas API con Postman
-   - Validar endpoints
-   - Comprobar respuestas JSON
-
-3. **Fase 5**: Pruebas de BD
-   - Integridad referencial
-   - Transacciones
-
-4. **Fase 6**: Pruebas de Seguridad
-   - OWASP ZAP
-   - Inyección SQL
-   - XSS
+```bash
+pytest --cov=. --cov-report=html
+```
 
 ---
 
-**Versión:** 1.0  
-**Fecha:** Mayo 2026  
-**Autor:** QA Team
+## Requisitos Previos
+
+### Base de datos creada
+
+```bash
+python db/init_db.py
+```
+
+### Validar tablas principales
+
+```bash
+sqlite3 db/database.sqlite ".tables"
+```
+
+Resultado esperado:
+
+```text
+users
+producto
+orders
+prenda
+molde
+tela
+estilo
+estados
+usuario
+```
+
+### Verificar integridad
+
+```bash
+sqlite3 db/database.sqlite "PRAGMA integrity_check;"
+```
+
+Resultado esperado:
+
+```text
+ok
+```
+
+---
+
+## Datos de Prueba
+
+### Usuario
+
+```text
+Correo: stayconnectpg@gmail.com
+Contraseña: YuLL&71T87N-
+```
+
+### Producto
+
+```text
+Descripción: Camiseta personalizada básica
+Estado: Activo
+Talla: M
+```
+
+### Pedido
+
+```text
+Producto: Camiseta personalizada básica
+Estado: En proceso
+Descripción: Pedido de prueba
+```
+
+---
+
+## Reportes
+
+Los resultados de ejecución se almacenan en:
+
+```text
+evidencias/test_report.html
+evidencias/coverage_report.html
+```
+
+---
+
+## Resultado Esperado
+
+```text
+=====================
+7 PASSED
+=====================
+```
+
+---
+
+## Relación con las demás fases
+
+| Fase   | Descripción         |
+| ------ | ------------------- |
+| Fase 2 | Pruebas Unitarias   |
+| Fase 3 | Selenium IDE        |
+| Fase 4 | API Postman         |
+| Fase 5 | Base de Datos       |
+| Fase 6 | Seguridad OWASP ZAP |
+
+---
+
+**Proyecto:** Jeanstyle
+**Versión:** 1.1
+**Ambiente:** Local
+**Herramienta:** Pytest + SQLite

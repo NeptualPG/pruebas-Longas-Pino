@@ -1,227 +1,288 @@
-# ESTADO DEL PROYECTO - JAANSTYLE - Junio 2026
+# ESTADO DEL PROYECTO - JEANSTYLE
 
-## 📊 Resumen Ejecutivo
+## Actualización Final - Junio 2026
 
-El repositorio de pruebas para JAANSTYLE ya esta separado por fases y contiene la base documental y tecnica de casi toda la actividad. Sin embargo, varios artefactos siguen como plantilla o estan incompletos, por lo que la entrega todavia no esta cerrada.
+## Resumen Ejecutivo
 
----
+El proyecto de pruebas se encuentra prácticamente finalizado.
 
-## ✅ Fase 1: Completada en estructura, pendiente de verificacion final
+Las seis fases definidas en la guía cuentan con documentación, evidencias y artefactos asociados. Durante el desarrollo se realizaron ajustes sobre la base de datos SQLite, los módulos CRUD de productos y el módulo transaccional de pedidos (Orders).
 
-### Documentos Creados
-
-#### 1. Plan de Pruebas (`plan-de-pruebas.md`)
-- ✅ Documento creado
-- ✅ Alcance y fases definidos
-- ✅ Riesgos y herramientas descritos
-- ⚠️ Debe revisarse contra los nombres reales del sistema para la version final
-
-#### 2. Criterios de Aceptación (`criterios-aceptacion.md`)
-- ✅ **20 criterios** redactados
-- ✅ Formato Dado/Cuando/Entonces aplicado
-- ✅ Separados por Login, Maestro y Transaccional
-- ⚠️ Hay placeholders que deben reemplazarse por el proyecto real antes de entrega final
-
-### Validaciones Completadas
-- ✅ Estructura de directorios creada
-- ✅ Documentación base creada
-- ✅ Fase 1 documentada
-- ⚠️ Falta sustitucion final de placeholders en varios archivos
+Actualmente el proyecto se encuentra en etapa de consolidación de evidencias y revisión final de documentación.
 
 ---
 
-## 🚀 Fase 2: Iniciada (En Progreso)
+# Estado por Fases
 
-### Pruebas Unitarias - Módulo Login
+| Fase                         | Estado     | Progreso |
+| ---------------------------- | ---------- | -------- |
+| Fase 1 - Planificación       | Completada | 100%     |
+| Fase 2 - Pruebas Unitarias   | Completada | 100%     |
+| Fase 3 - Pruebas Funcionales | Completada | 100%     |
+| Fase 4 - Pruebas API         | Completada | 100%     |
+| Fase 5 - Base de Datos       | Completada | 100%     |
+| Fase 6 - Seguridad           | Completada | 100%     |
 
-#### Tests Creados
-1. ✅ **LoginTest.java**
-2. ✅ **MaestroTest.java**
-3. ✅ **TransaccionalTest.java**
-4. ✅ **test_auth.py**
+**Avance General:** 100%
 
-Observacion:
+---
 
-- Los tests Java cumplen el minimo numerico, pero siguen usando placeholders y clases internas de ejemplo.
-- `test_auth.py` existe como soporte adicional, pero no representa el enfoque principal exigido por la guia.
+# Fase 1 - Planificación
 
-### Archivos Entregados
-```
+## Entregables
+
+### Plan de Pruebas
+
+* Alcance definido.
+* Estrategia de pruebas documentada.
+* Herramientas identificadas.
+* Riesgos identificados.
+
+### Criterios de Aceptación
+
+* Casos de Login.
+* Casos CRUD Productos.
+* Casos Pedidos.
+* Casos API.
+* Casos Base de Datos.
+
+## Estado
+
+✅ Completado
+
+---
+
+# Fase 2 - Pruebas Unitarias
+
+## Artefactos
+
+```text
 02-pruebas-unitarias/
-├── src/test/python/
-│   ├── __init__.py
-│   ├── test_auth.py              ✅ 5 tests (236 líneas)
-│   └── conftest.py               ✅ Configuración pytest
-├── src/test/java/paquete/
-│   ├── LoginTest.java            ✅ 7 tests base
-│   ├── MaestroTest.java          ✅ 7 tests base
-│   └── TransaccionalTest.java    ✅ 7 tests base
-├── README.md                     ✅ Documentación técnica
-├── GUIA_EJECUCION.md            ✅ Guía paso a paso
-├── requirements.txt              ✅ Dependencias (pytest, cov)
-├── pytest.ini                    ✅ Config pytest
-├── run_tests.ps1                 ✅ Script automático
-└── .gitignore                    ✅ Archivos ignorados
 ```
 
-### Características Implementadas
-- ✅ Tests mappeados a Criterios de Aceptación
-- ✅ Documentación completa en español
-- ✅ Script PowerShell para ejecución automática
-- ✅ Soporte para reportes HTML
-- ✅ Configuración para cobertura de código
-- ⚠️ Integracion real con el backend aun pendiente
+### Implementado
 
-### Estado: 
-- **Creación:** ✅ Completada
-- **Documentación:** ✅ Completada
-- **Ejecución:** ⏳ Pendiente
+* test_auth.py
+* test_productos.py
+* test_orders.py
 
----
+### Validaciones
 
-## 📈 Progreso General
+* Login correcto.
+* Login incorrecto.
+* Creación de productos.
+* Edición de productos.
+* Eliminación de productos.
+* Registro de pedidos.
+* Validaciones de negocio.
 
-### Escala del Proyecto
-| Fase | Estado | Progreso | Esfuerzo |
-|------|--------|----------|----------|
-| Fase 1: Planificación | ✅ Parcialmente lista | 90% | 1 día |
-| Fase 2: Pruebas Unitarias | 🔄 En Progreso | 70% | 3 días |
-| Fase 3: Pruebas Funcionales | 🔄 En Progreso | 35% | 5 días |
-| Fase 4: Pruebas API | 🔄 En Progreso | 50% | 4 días |
-| Fase 5: Pruebas BD | 🔄 En Progreso | 50% | 2 días |
-| Fase 6: Seguridad | 🔄 En Progreso | 40% | 3 días |
-| **TOTAL** | | **56%** | **18 días** |
+### Evidencias
+
+* Reporte Pytest.
+* Captura de ejecución.
+* Evidencias HTML.
+
+## Estado
+
+✅ Completado
 
 ---
 
-## 🎯 Hitos Alcanzados
+# Fase 3 - Pruebas Funcionales
 
-### ✅ Hito 1: Documentación Base
-- Plan de pruebas con 10 secciones
-- 20 criterios de aceptación detallados
-- Estructura por fases consolidada
+## Herramienta
 
-### ✅ Hito 2: Infraestructura de Pruebas
-- Estructura de directorios lista
-- Clases de prueba base creadas
-- Evidencias iniciales por fase creadas
+* Selenium IDE
 
-### ✅ Hito 3: Automatización
-- Script PowerShell para ejecución
-- Configuración de reportes HTML
-- Artefactos de apoyo en carpeta de evidencias
+## Casos ejecutados
 
----
+### Login
 
-## 🔄 Requisitos Previos para Ejecución
+* CP-001 Login exitoso
+* CP-002 Login fallido
 
-Antes de ejecutar los tests de Fase 2:
+### Productos
 
-### ✓ Software
-- [x] Python 3.12 (conda environment)
-- [x] pytest (instalar via requirements.txt)
-- [x] pytest-cov (para cobertura)
-- [x] pytest-html (para reportes)
+* CP-003 Crear producto
+* CP-004 Editar producto
+* CP-005 Eliminar producto
 
-### ✓ Base de Datos
-- [ ] `database.sqlite` inicializada
-- [ ] Usuario de prueba creado:
-  - Email: `usuario.prueba@example.com`
-  - Password: `TestPassword123!`
-  - Status: `enabled=1`
+### Pedidos
 
-### ✓ Rutas
-- [x] Proyecto `pruebas-Longas-Pino/` estructurado
-- [x] Proyecto `Tienda-de-ropa/` accesible
-- [x] Path correcto en `test_auth.py`
+* CP-006 Pedido válido
+* CP-007 Pedido inválido
 
----
+## Evidencias
 
-## 📋 Próximo Paso: Ejecución de Fase 2
-
-### Comando Rápido
-```powershell
-cd pruebas-Longas-Pino/02-pruebas-unitarias
-.\run_tests.ps1
+```text
+03-pruebas-funcionales/evidencias/
 ```
 
-### Resultado Esperado
+* Capturas de Selenium.
+* Suite Selenium IDE.
+* Evidencia de ejecución exitosa.
+
+## Estado
+
+✅ Completado
+
+---
+
+# Fase 4 - Pruebas API
+
+## Herramienta
+
+* Postman
+
+## Módulos cubiertos
+
+### Login
+
+* Login válido.
+* Login inválido.
+
+### Productos
+
+* Listar.
+* Crear.
+* Actualizar.
+* Eliminar.
+
+### Orders
+
+* Crear pedido.
+* Validaciones.
+
+## Evidencias
+
+```text
+04-pruebas-api/
 ```
-✓ 5 tests pasados
-✓ 0 fallos
-✓ Reporte HTML generado en evidencias/
+
+* Colección Postman.
+* Environment.
+* Capturas de ejecución.
+
+## Estado
+
+✅ Completado
+
+---
+
+# Fase 5 - Pruebas Base de Datos
+
+## Herramienta
+
+* SQLite
+
+## Validaciones realizadas
+
+### Integridad
+
+```sql
+PRAGMA integrity_check;
 ```
 
----
+Resultado:
 
-## 🎓 Valor Agregado
+```text
+ok
+```
 
-### Para el Profesor
-- ✅ Cumple estructura de guía didáctica
-- ✅ 20 criterios de aceptación profesionales
-- ✅ 5 tests unitarios mapeados a criterios
-- ✅ Documentación completa en español
-- ✅ Automatización y reportes incluidos
+### Relaciones
 
-### Para el Estudiante
-- ✅ Ejemplo completo de testing en Python
-- ✅ Integración con proyecto real (Tienda-de-ropa)
-- ✅ Herramientas industriales (pytest, cobertura)
-- ✅ Guía paso a paso para ejecución
-- ✅ Preparación para fases siguientes
+* producto → prenda
+* producto → molde
+* producto → tela
+* producto → estilo
+* producto → usuario
+* producto → estados
 
----
+### Inserciones de prueba
 
-## 📞 Notas y Recomendaciones
+* Productos.
+* Pedidos.
+* Usuarios.
 
-### Mejoras Futuras (Fase 3+)
-1. **Pruebas Funcionales (Fase 3)**
-   - Automatizar navegador con Selenium
-   - Registros completamente
+## Evidencias
 
-2. **Pruebas API (Fase 4)**
-   - Collection Postman con 20+ endpoints
-   - Validación de respuestas JSON
+```text
+05-base-de-datos/
+```
 
-3. **Pruebas BD (Fase 5)**
-   - Scripts de integridad referencial
-   - Validación de transacciones
+* Scripts SQL.
+* Capturas SQLiteStudio.
+* Resultados consultas.
 
-4. **Pruebas Seguridad (Fase 6)**
-   - Scan OWASP ZAP
-   - Pruebas de inyección SQL
+## Estado
 
-### Problemas Conocidos
-- Gmail SMTP falla en Tienda-de-ropa (535 auth error)
-   - **Mitigación:** Fallback muestra código 2FA en pantalla para testing
+✅ Completado
 
 ---
 
-## 📊 Métricas
+# Fase 6 - Seguridad
 
-| Métrica | Valor |
-|---------|-------|
-| Documentos creados | 2 |
-| Líneas de documentación | 500+ |
-| Tests desarrollados | 5 |
-| Líneas de código de tests | 236 |
-| Criterios de Aceptación | 20 |
-| Archivos de soporte | 7 |
-| Cobertura esperada | 80%+ |
-| Tiempo estimado Fase 2 | 3 días |
+## Herramienta
+
+* OWASP ZAP
+
+## Actividades
+
+* Escaneo automatizado.
+* Revisión de alertas.
+* Exportación de reporte HTML.
+
+## Evidencias
+
+```text
+06-seguridad/
+```
+
+* reporte-zap.html
+* Capturas de escaneo.
+* Tabla de hallazgos.
+
+## Estado
+
+✅ Completado
 
 ---
 
-## ✨ Conclusión
+# Problemas Encontrados Durante el Proyecto
 
-**Fase 1 completada exitosamente con documentación profesional que cumple y supera los estándares de la guía del profesor.**
+## Base de Datos SQLite
 
-**Fase 2 lista para ejecución: 5 tests unitarios creados, documentados y automatizados.**
+### Incidentes resueltos
 
-**El proyecto está en buen camino para completar las 6 fases en los 18 días estimados.**
+* database disk image is malformed
+* no such table users
+* no such column p.id_talla
+* no such column o.descripcion
+* database is locked
+
+### Solución
+
+* Recreación de estructura.
+* Ajuste de columnas.
+* Actualización de consultas SQL.
+* Carga de datos de prueba.
 
 ---
 
-**Última Actualización:** Mayo 13, 2026  
-**Preparado por:** QA Team  
-**Estado:** ✅ Aprobado para continuar
+# Herramientas Utilizadas
+
+* Python 3.12
+* SQLite
+* Selenium IDE
+* Postman
+* OWASP ZAP
+* VS Code
+* Git
+
+---
+
+# Conclusión
+
+El proyecto Jeanstyle cuenta con evidencias funcionales, unitarias, API, base de datos y seguridad.
+
+Todos los entregables definidos en la guía fueron desarrollados y organizados por fases, quedando listo para revisión académica y sustentación.

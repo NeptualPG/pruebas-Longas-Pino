@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/style/style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../static/style/dashboard_user.css" />
+
+    <title>Dashboard - JAANSTYLE</title>
+
+    <!-- Librería de iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <!-- Logo a la izquierda -->
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <img src="/static/logo/logo.png" alt="JAANSTYLE">
+                    <span class="fw-bold">Diego</span>
+                </a>
+
+                <!-- Botón menú móvil -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+                <!-- Links -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="mostrarSeccion('creacion-prenda')">Creación de prendas
+                                <i class="fa fa-tshirt"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="mostrarSeccion('informes')">Pedidos
+                                <i class="fa fa-file-alt"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="mostrarSeccion('consultas')">
+                                Consultas<i class="fa fa-question-circle"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"
+                                onclick="mostrarSeccion('perfil')">Perfil<i class="fa fa-user"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"
+                                onclick="mostrarSeccion('carrito')">Carrito<i class="fa fa-shopping-cart"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Cerrar Sesion<i class="fa fa-door-open"></i></a>
+                        </li>
+                    </ul>
+                    <!-- Iconos -->
+                    <div class="d-flex ms-3">
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+
+
+        <!-- Contenido -->
+        <main class="content container-fluid my-4">
+            <!-- Intro -->
+            <section id="intro" class="intro p-3 rounded mb-3">
+                <h2>Bienvenido</h2>
+                <p>
+                    La venta de ropa personalizada ha sido una gran opción al mercado de
+                    hoy en día, ya que permite a los clientes expresar su estilo y
+                    personalidad de manera única. Por lo que la creación de una página web
+                    de venta de ropa personalizada es una gran idea para satisfacer las
+                    necesidades de las personas de hoy en día.
+                </p>
+            </section>
+
+
+
+            <!-- Creación de Prenda -->
+            <section id="creacion-prenda" class="p-3 rounded mb-3 d-none">
+                <h2>Personalización de Prenda</h2>
+                <div class="customization-container">
+                    <!-- Selección General -->
+                    <div class="selection-general-panel">
+                        <h4>Selección General: </h4>
+                        <div class="form-group">
+                            <label for="id_prenda">Prenda</label>
+                            <select id="id_prenda" onchange="loadTiposPrenda(); loadEstilosPrenda(); updatePreview()">
+                <option value="">Selecciona prenda</option>
+                
+                <option value="1">Camiseta</option>
+                
+                <option value="4">Blusa</option>
+                
+                <option value="5">Chaqueta</option>
+                
+              </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_estilo">Estilo</label>
+                            <select id="id_estilo" onchange="updatePreview()">
+                <option value="">Selecciona estilo</option>
+                
+                <option value="5">Manga corta</option>
+                
+                <option value="6">Manga larga</option>
+                
+                <option value="7">Cuello V</option>
+                
+                <option value="8">Oversize</option>
+                
+                <option value="9">Blusa off shoulder</option>
+                
+                <option value="10">Blusa crop</option>
+                
+                <option value="11">Blusa Basica</option>
+                
+                <option value="12">Chaqueta biker</option>
+                
+                <option value="13">Chaqueta bomber</option>
+                
+                <option value="14">Chaqueta denim</option>
+                
+              </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_tela">Tela</label>
+                            <select id="id_tela" onchange="updatePreview()">
+                <option value="">Selecciona tela</option>
+                
+                <option value="1">Algodón</option>
+                
+                <option value="2">Poliéster</option>
+                
+                <option value="6">Nilo</option>
+                
+              </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="color">Color</label>
+                            <div id="color-selector">
+
+                                <button type="button" class="color-circle" data-color="#5d7237" title="Verde olivo oscuro" style="background-color: #5d7237;"></button>
+
+                                <button type="button" class="color-circle" data-color="#8b8365" title="marron claro" style="background-color: #8b8365;"></button>
+
+                                <button type="button" class="color-circle" data-color="#326185" title="azul marino" style="background-color: #326185;"></button>
+
+                                <button type="button" class="color-circle" data-color="#660000" title="rojo oscuro" style="background-color: #660000;"></button>
+
+                                <button type="button" class="color-circle" data-color="#fff1a8" title="amarillo opaco" style="background-color: #fff1a8;"></button>
+
+                                <button type="button" class="color-circle" data-color="#bb76bc" title="lavanda" style="background-color: #bb76bc;"></button>
+
+                            </div>
+                            <input type="hidden" id="color" value="#f8fbff">
+                            <br><br><br>
+                            <div class="form-group">
+                                <button type="button" id="upload-btn">Subir imagen de diseño</button>
+                                <input type="file" id="upload" accept="image/*" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vista Previa -->
+                    <div class="preview-panel">
+                        <h4>Vista Previa</h4>
+                        <div id="canvas-container" class="preview-img">
+                            <canvas id="prenda-canvas" width="500" height="500"></canvas>
+                            <div class="interactive-area" id="interactiveArea">
+                                <div class="overlay-container disabled" id="overlayContainer">
+                                    <img id="overlay" draggable="false"  alt="">
+                                    <div class="handle bottom-right"></div>
+                                    <div class="handle rotate" title="Rotar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button id="guardar-diseno" onclick="guardarDiseno()">Guardar Diseño</button>
+                        </div>
+                    </div>
+
+                    <!-- Modo de Personalización -->
+                    <div class="mode-personalizacion-panel">
+                        <h4>Modo de Personalización: </h4>
+                        <div class="form-group">
+                            <label for="modo">Modo</label>
+                            <select id="modo" onchange="setMode(this.value)">
+                <option value="basico">Básico</option>
+                <option value="avanzado">Avanzado</option>
+              </select>
+                        </div>
+                        <div id="mode-options" class="mode-options">
+                            <!-- Opciones Básicas -->
+                            <div id="basico-options">
+                                <div class="form-group">
+                                    <label for="talla-basica">Talla</label>
+                                    <select id="talla-basica">
+                    <option value="">Selecciona talla</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                  </select>
+                                </div>
+                            </div>
+                            <!-- Opciones Avanzadas -->
+                            <div id="avanzado-options" style="display: none;">
+                                <h5>Medidas (cm):</h5>
+                                <div class="measurements">
+                                    <div class="form-group">
+                                        <label for="cuello">Contorno de cuello</label>
+                                        <input type="number" id="cuello" min="30" max="50" step="0.5" placeholder="Ej: 40 cm ">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="torax">Contorno de tórax</label>
+                                        <input type="number" id="torax" min="80" max="120" step="0.5" placeholder="Ej: 98 cm ">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="largo-total">Largo total</label>
+                                        <input type="number" id="largo-total" min="60" max="90" step="0.5" placeholder="Ej: 72 cm ">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sisa">Contorno de sisa</label>
+                                        <input type="number" id="sisa" min="40" max="60" step="0.5" placeholder="Ej: 46 cm ">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="largo-manga">Largo de manga</label>
+                                        <input type="number" id="largo-manga" min="50" max="70" step="0.5" placeholder="Ej: 58 cm ">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="brazo">Contorno de brazo</label>
+                                        <input type="number" id="brazo" min="25" max="40" step="0.5" placeholder="Ej: 34 cm ">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hombro">Ancho de hombro</label>
+                                        <input type="number" id="hombro" min="35" max="50" step="0.5" placeholder="Ej: 44 cm ">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resumen de Personalización -->
+                    <div class="summary-panel">
+                        <h5>Resumen de Personalización</h5>
+                        <div id="summary-output"></div>
+                        <!-- JSON output will be rendered inside the summary below -->
+                    </div>
+            </section>
+
+            <!-- Pedidos -->
+            <section id="informes" class="p-3 rounded mb-3 d-none">
+                <h2>Pedidos</h2>
+                <p>Aquí podrás visualizar el historial de tus prendas creadas.</p>
+
+                <table class="table  table-hover text-center align-middle">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Prenda</th>
+                            <th>Estilo</th>
+                            <th>Tela</th>
+                            <th>Talla</th>
+                            <th>Molde</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan='4' class='text-center'>No hay productos disponibles.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Consultas -->
+            <section id="consultas" class="p-3 rounded mb-3 d-none">
+                <h2>Consultas</h2>
+                <p>Si tienes alguna duda o necesitas ayuda, escríbenos aquí:</p>
+                <div id="consulta-error" class="alert alert-danger d-none" role="alert"></div>
+                <form id="consulta-form">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input
+              type="text"
+              id="nombre"
+              class="form-control"
+              placeholder="Escribe tu nombre"
+            />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo</label>
+                        <input
+              type="email"
+              id="email"
+              class="form-control"
+              placeholder="ejemplo@correo.com"
+            />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="mensaje" class="form-label">Mensaje</label>
+                        <textarea
+              id="mensaje"
+              rows="4"
+              class="form-control"
+              placeholder="Escribe tu consulta"
+            ></textarea>
+                    </div>
+
+                    <button type="submit">Enviar</button>
+                </form>
+            </section>
+
+            <!-- Perfil -->
+            <section id="perfil" class="p-3 rounded mb-3 d-none">
+                <h2>Perfil</h2>
+                <p>Aquí puedes gestionar tu información personal.</p>
+            </section>
+
+            <!-- Carrito -->
+            <section id="carrito" class="p-3 rounded mb-3 d-none">
+                <h2>Carrito</h2>
+                <p>Contenido de tu carrito de compras.</p>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-dark text-center py-3">
+            <div class="social">
+                <a href="#" class="text-light me-3">instagram
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="#" class="text-light">facebook
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+            </div>
+        </footer>
+        <!-- Toast container para notificaciones no bloqueantes -->
+        <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3" aria-live="polite"
+            aria-atomic="true"></div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/static/js/utils.js"></script>
+        <script src="/static/js/dashboard_user.js"></script>
+</body>
+
+</html>

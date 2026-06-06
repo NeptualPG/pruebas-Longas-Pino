@@ -1,334 +1,268 @@
 # GUÍA DE EJECUCIÓN - Fase 2: Pruebas Unitarias
 
-## 📋 Resumen
+## Resumen
 
-Esta fase ejecuta **5 pruebas unitarias** del módulo de autenticación (Login) del sistema JAANSTYLE, mapeadas directamente a los criterios de aceptación CA-06, CA-08, CA-09, CA-10 y CA-11.
+Esta fase ejecuta pruebas unitarias sobre las funcionalidades principales implementadas en el sistema Jeanstyle:
+
+* Autenticación de usuarios
+* Gestión de productos
+* Gestión de pedidos (Orders)
+
+Las pruebas se ejecutan utilizando Pytest sobre las funciones del proyecto.
 
 ---
 
-## 🚀 Inicio Rápido
+## Inicio Rápido
 
-### Opción 1: Usar Script PowerShell (Recomendado)
+### Activar entorno
 
 ```powershell
-# En PowerShell, dentro de la carpeta 02-pruebas-unitarias/
-.\run_tests.ps1
-```
-
-El script automáticamente:
-- ✅ Verifica pytest instalado
-- ✅ Instala dependencias si falta
-- ✅ Crea carpeta `evidencias/`
-- ✅ Ejecuta todos los tests
-- ✅ Genera reporte HTML
-
-### Opción 2: Comando Manual
-
-```bash
-# Activar Python 3.12
 conda activate python312
+```
 
-# Navegar a carpeta de pruebas
-cd pruebas-Longas-Pino/02-pruebas-unitarias
+### Instalar dependencias
 
-# Instalar dependencias
-pip install -r requirements.txt
+```powershell
+pip install pytest pytest-html pytest-cov
+```
 
-# Ejecutar tests
-pytest src/test/python/test_auth.py -v
+### Ejecutar todas las pruebas
+
+```powershell
+pytest -v
+```
+
+### Ejecutar únicamente autenticación
+
+```powershell
+pytest tests/test_auth.py -v
+```
+
+### Ejecutar únicamente productos
+
+```powershell
+pytest tests/test_productos.py -v
+```
+
+### Ejecutar únicamente pedidos
+
+```powershell
+pytest tests/test_orders.py -v
 ```
 
 ---
 
-## 📊 Pruebas Incluidas
+## Casos Unitarios Cubiertos
 
-### 1️⃣ TestLoginExitoso (CA-06)
-```
-✓ Usuario loguea con credenciales correctas
-✓ Se genera código 2FA de 6 dígitos
-✓ Mensaje confirma envío de 2FA
-```
+### UT-001 Login exitoso
 
-### 2️⃣ TestPasswordIncorrecta (CA-08)
-```
-✓ Login rechaza contraseña incorrecta
-✓ Mensaje indica "Credenciales inválidas"
-✓ NO se genera token 2FA
-```
+**Objetivo**
 
-### 3️⃣ TestUsuarioBloqueado (CA-09)
-```
-✓ Después de 3 intentos fallidos, cuenta se bloquea
-✓ Campo 'blocked' = 1 en BD
-✓ Mensaje indica "Cuenta bloqueada"
+Validar que un usuario registrado pueda autenticarse correctamente.
+
+**Datos**
+
+```text
+Correo: stayconnectpg@gmail.com
+Password: YuLL&71T87N-
 ```
 
-### 4️⃣ TestUsuarioInactivo (CA-10)
-```
-✓ Usuario deshabilitado es rechazado
-✓ NO se genera token 2FA
-✓ Acceso es denegado
-```
+**Resultado esperado**
 
-### 5️⃣ TestGeneracion2FA (CA-11)
-```
-✓ Código 2FA es de 6 dígitos
-✓ Código es numérico
-✓ Códigos son únicos (aleatorios)
-```
+* Login exitoso.
+* Retorna sesión válida.
+* Usuario autenticado.
 
 ---
 
-## 📝 Requisitos Previos
+### UT-002 Login fallido
 
-### 1. Python 3.12 Instalado
-```bash
-conda activate python312
-python --version  # Debe ser 3.12.x
-```
+**Objetivo**
 
-### 2. Usuario de Prueba en BD
-La BD debe tener este usuario:
-- **Email:** `usuario.prueba@example.com`
-- **Password:** `TestPassword123!`
-- **Estado:** `enabled = 1`
+Validar rechazo de contraseña incorrecta.
 
-Para crear el usuario manualmente:
+**Resultado esperado**
 
-```python
-# Ejecutar dentro de Tienda-de-ropa/
-from controllers.auth import create_user
-
-success, msg = create_user(
-    email="usuario.prueba@example.com",
-    username="usuario_prueba",
-    password="TestPassword123!",
-    first_name="Usuario",
-    last_name="Prueba",
-    id_tipo_documento="CC",
-    documento="1234567890",
-    address1="Calle Test 123",
-    phone1="3001234567"
-)
-print(f"Usuario creado: {success} - {msg}")
-```
-
-### 3. Base de Datos Inicializada
-```bash
-# Si la BD no existe, crear:
-cd Tienda-de-ropa
-python db/init_db.py
-```
+* Login rechazado.
+* Mensaje de error.
+* No genera sesión.
 
 ---
 
-## ⚙️ Ejecución Detallada
+### UT-003 Crear producto
 
-### Ver Toda la Salida
+**Objetivo**
 
-```bash
-pytest src/test/python/test_auth.py -v --tb=long
-```
+Validar inserción correcta en tabla producto.
 
-### Ejecutar Test Específico
+**Resultado esperado**
 
-```bash
-# Solo TestLoginExitoso
-pytest src/test/python/test_auth.py::TestLoginExitoso -v
-
-# Solo test_password_incorrecta
-pytest src/test/python/test_auth.py::TestPasswordIncorrecta::test_password_incorrecta -v
-```
-
-### Ejecutar Pruebas con Cobertura
-
-```bash
-pytest src/test/python/test_auth.py \
-  --cov=../../../../Tienda-de-ropa/controllers/auth \
-  --cov-report=html \
-  --cov-report=term
-```
-
-Esto genera `htmlcov/index.html` con cobertura detallada.
-
-### Modo Silencioso (Solo Resumen)
-
-```bash
-pytest src/test/python/test_auth.py -q
-```
+* Registro creado.
+* ID generado.
+* Datos almacenados correctamente.
 
 ---
 
-## 📈 Salida Esperada
+### UT-004 Actualizar producto
 
-### ✅ Todas las Pruebas Pasan
+**Objetivo**
 
-```
-test_auth.py::TestLoginExitoso::test_login_exitoso PASSED                [20%]
-test_auth.py::TestPasswordIncorrecta::test_password_incorrecta PASSED     [40%]
-test_auth.py::TestUsuarioBloqueado::test_usuario_bloqueado PASSED        [60%]
-test_auth.py::TestUsuarioInactivo::test_usuario_inactivo PASSED          [80%]
-test_auth.py::TestGeneracion2FA::test_generacion_2fa PASSED              [100%]
+Validar modificación de producto existente.
 
-================== 5 passed in 0.52s ==================
-```
+**Resultado esperado**
 
-### ❌ Si Alguna Falla
-
-Pytest mostrará:
-```
-FAILED test_auth.py::TestLoginExitoso::test_login_exitoso - AssertionError: ...
-
-================== 1 failed, 4 passed in 0.78s ==================
-```
+* Registro actualizado.
+* Datos reflejados en consulta posterior.
 
 ---
 
-## 🔍 Verificación Manual de Requisitos
+### UT-005 Eliminar producto
 
-Antes de ejecutar tests, verificar:
+**Objetivo**
 
-### 1. BD Accesible
-```bash
-# Desde Tienda-de-ropa/
-python -c "
-import sqlite3
-conn = sqlite3.connect('db/database.sqlite')
-cursor = conn.cursor()
-cursor.execute('SELECT COUNT(*) FROM users')
-print(f'Total usuarios en BD: {cursor.fetchone()[0]}')
-conn.close()
-"
-```
+Validar eliminación lógica o física de producto.
 
-### 2. Usuario de Prueba Existe
-```bash
-# Desde Tienda-de-ropa/
-python -c "
-import sqlite3
-conn = sqlite3.connect('db/database.sqlite')
-cursor = conn.cursor()
-cursor.execute(\"SELECT id, correo, enabled FROM users WHERE correo='usuario.prueba@example.com'\")
-row = cursor.fetchone()
-if row:
-    print(f'Usuario encontrado: ID={row[0]}, Email={row[1]}, Enabled={row[2]}')
-else:
-    print('Usuario de prueba NO ENCONTRADO')
-conn.close()
-"
-```
+**Resultado esperado**
 
-### 3. Módulo auth.py Accesible
-```bash
-# Desde pruebas-Longas-Pino/02-pruebas-unitarias/
-python -c "
-import sys
-sys.path.insert(0, '../../../Tienda-de-ropa')
-from controllers.auth import login, generate_2fa_code
-print('✓ auth.py importado exitosamente')
-print(f'✓ Funciones disponibles: login, generate_2fa_code')
-"
-```
+* Producto eliminado.
+* No aparece en listados.
 
 ---
 
-## 📁 Estructura Generada
+### UT-006 Crear pedido
 
+**Objetivo**
+
+Validar inserción de pedidos en tabla orders.
+
+**Resultado esperado**
+
+* Pedido registrado.
+* Estado almacenado.
+* Relación con producto válida.
+
+---
+
+### UT-007 Validación de pedido inválido
+
+**Objetivo**
+
+Validar rechazo cuando faltan datos obligatorios.
+
+**Resultado esperado**
+
+* No se crea pedido.
+* Se retorna mensaje de validación.
+
+---
+
+## Evidencias Generadas
+
+Después de ejecutar:
+
+```powershell
+pytest -v --html=evidencias/test_report.html --self-contained-html
 ```
+
+se generan:
+
+```text
 02-pruebas-unitarias/
-├── src/test/python/
-│   ├── __init__.py
-│   ├── conftest.py                 # Configuración pytest
-│   └── test_auth.py                # 5 tests de autenticación
+│
 ├── evidencias/
-│   ├── test_report.html            # Reporte después de ejecutar
-│   └── coverage_report.html        # Cobertura (opcional)
-├── pytest.ini                      # Config pytest
-├── requirements.txt                # Dependencias
-├── run_tests.ps1                   # Script PowerShell
-└── README.md                       # Documentación
+│   ├── test_report.html
+│   ├── cobertura.html
+│   └── consola-ejecucion.png
+│
+├── tests/
+│   ├── test_auth.py
+│   ├── test_productos.py
+│   └── test_orders.py
+│
+└── README.md
 ```
 
 ---
 
-## 🐛 Solución de Problemas
+## Resultado Esperado
 
-### Problema: "ModuleNotFoundError: No module named 'controllers'"
-
-**Solución:** Verificar que la ruta al proyecto Tienda-de-ropa es correcta en `test_auth.py` línea 14:
-
-```python
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../..', 'Tienda-de-ropa'))
-```
-
-Debe apuntar a: `C:\Users\juand\Order\projects\StayConnect\Jeanstyle\Tienda-de-ropa`
-
-### Problema: "No such table: users"
-
-**Solución:** La BD no está inicializada. Ejecutar:
-
-```bash
-cd Tienda-de-ropa
-python db/init_db.py
-```
-
-### Problema: "Usuario de prueba no encontrado"
-
-**Solución:** Crear el usuario manualmente:
-
-```bash
-cd Tienda-de-ropa
-python -c "
-from controllers.auth import create_user
-success, msg = create_user(
-    email='usuario.prueba@example.com',
-    username='usuario_prueba',
-    password='TestPassword123!',
-    first_name='Usuario',
-    last_name='Prueba',
-    id_tipo_documento='CC',
-    documento='1234567890',
-    address1='Calle Test 123',
-    phone1='3001234567'
-)
-print(f'Resultado: {success} - {msg}')
-"
-```
-
-### Problema: "pytest: command not found"
-
-**Solución:** Instalar pytest:
-
-```bash
-pip install pytest pytest-cov pytest-html
+```text
+=========================
+7 passed in 0.85s
+=========================
 ```
 
 ---
 
-## ✅ Checklist Pre-Ejecución
+## Verificaciones Previas
 
-Antes de ejecutar los tests:
+### Base de datos
 
-- [ ] Python 3.12 activado (`conda activate python312`)
-- [ ] Pytest instalado (`pip install -r requirements.txt`)
-- [ ] BD `database.sqlite` existe
-- [ ] Usuario `usuario.prueba@example.com` existe en BD
-- [ ] Usuario tiene `enabled=1`
-- [ ] Contraseña es `TestPassword123!`
-- [ ] Módulo `controllers/auth.py` es accesible
-- [ ] Proyecto `Tienda-de-ropa` está en ruta correcta
+```powershell
+sqlite3 db/database.sqlite ".tables"
+```
+
+Debe mostrar:
+
+```text
+users
+producto
+orders
+prenda
+molde
+tela
+estilo
+estados
+usuario
+```
+
+### Integridad
+
+```powershell
+sqlite3 db/database.sqlite "PRAGMA integrity_check;"
+```
+
+Resultado esperado:
+
+```text
+ok
+```
+
+### Usuario de prueba
+
+```sql
+SELECT correo
+FROM users
+WHERE correo='stayconnectpg@gmail.com';
+```
+
+Resultado esperado:
+
+```text
+stayconnectpg@gmail.com
+```
 
 ---
 
-## 📊 Próximos Pasos Después de Fase 2
+## Evidencia requerida
 
-1. **Fase 3**: Pruebas Funcionales con Selenium (automatizar navegador)
-2. **Fase 4**: Pruebas API con Postman (validar endpoints)
-3. **Fase 5**: Pruebas de BD (integridad referencial)
-4. **Fase 6**: Pruebas de Seguridad (OWASP ZAP, inyección SQL, XSS)
+* Captura ejecución Pytest exitosa.
+* Reporte HTML generado.
+* Evidencia de cobertura (opcional).
+* Captura de consola mostrando pruebas exitosas.
 
----
+## Herramientas
 
-**Versión:** 1.0  
-**Fecha:** Mayo 2026  
-**Autor:** QA Team
+* Python 3.12
+* Pytest
+* SQLite
+* VS Code
+* PowerShell
+
+## Estado esperado de la fase
+
+**APROBADA** cuando todas las pruebas unitarias ejecuten correctamente y el reporte indique:
+
+```text
+PASSED
+```

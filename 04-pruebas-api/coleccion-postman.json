@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "[NombreColeccion]-PruebasAPI",
+    "name": "Jeanstyle-PruebasAPI",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -13,12 +13,12 @@
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "url": "{{base_url}}/{{endpoint_login}}",
-            "body": { "mode": "raw", "raw": "{\n  \"usuario\": \"{{usuario_valido}}\",\n  \"clave\": \"{{clave_valida}}\"\n}" }
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{usuario_valido}}\",\n  \"password\": \"{{clave_valida}}\"\n}" }
           },
           "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
             "pm.test('Status esperado login exitoso', function () { pm.response.to.have.status(Number(pm.environment.get('status_login_ok'))); });",
             "pm.test('Respuesta no vacia', function () { pm.expect(pm.response.text()).to.not.be.empty; });",
-            "pm.test('Contiene token o sesion', function () { const r = pm.response.json(); pm.expect(r).to.have.any.keys('[campo_token]','[campo_sesion]','[campo_data]'); });"
+            "pm.test('Contiene token, sesion o 2FA', function () { const responseText = pm.response.text().toLowerCase(); pm.expect(responseText).to.match(/2fa|token|sesion|session|exito|código/); });"
           ] } }]
         },
         {
@@ -27,11 +27,11 @@
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "url": "{{base_url}}/{{endpoint_login}}",
-            "body": { "mode": "raw", "raw": "{\n  \"usuario\": \"{{usuario_valido}}\",\n  \"clave\": \"{{clave_invalida}}\"\n}" }
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{usuario_valido}}\",\n  \"password\": \"{{clave_invalida}}\"\n}" }
           },
           "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
             "pm.test('Status login fallido', function () { pm.response.to.have.status(Number(pm.environment.get('status_login_fail'))); });",
-            "pm.test('Mensaje de error presente', function () { pm.expect(pm.response.text()).to.include('[texto_error_login]'); });"
+            "pm.test('Mensaje de error presente', function () { pm.expect(pm.response.text().toLowerCase()).to.match(/error|inválida|incorrect|fall|denied/); });"
           ] } }]
         },
         {
@@ -49,10 +49,10 @@
       ]
     },
     {
-      "name": "Maestro",
+      "name": "Maestro (Productos)",
       "item": [
         {
-          "name": "Listar registros",
+          "name": "Listar productos",
           "request": {
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{auth_token}}" }],
@@ -60,11 +60,11 @@
           },
           "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
             "pm.test('Status listar maestro', function () { pm.response.to.have.status(200); });",
-            "pm.test('Lista no vacia o paginada', function () { const r = pm.response.json(); pm.expect(Array.isArray(r) || Array.isArray(r['[campo_items]'])).to.eql(true); });"
+            "pm.test('Lista no vacia o paginada', function () { const r = pm.response.json(); pm.expect(Array.isArray(r) || r.data || r.items).to.not.be.undefined; });"
           ] } }]
         },
         {
-          "name": "Crear registro valido",
+          "name": "Crear producto valido",
           "request": {
             "method": "POST",
             "header": [
@@ -72,15 +72,15 @@
               { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/{{endpoint_maestro_create}}",
-            "body": { "mode": "raw", "raw": "{\n  \"[campo_codigo]\": \"{{codigo_valido}}\",\n  \"[campo_nombre]\": \"{{nombre_valido}}\"\n}" }
+            "body": { "mode": "raw", "raw": "{\n  \"id_prenda\": 1,\n  \"descripcion\": \"{{nombre_valido}}\",\n  \"id_estado\": 1\n}" }
           },
           "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
-            "pm.test('Status crear maestro', function () { pm.response.to.have.status(Number(pm.environment.get('status_maestro_create_ok'))); });",
-            "pm.test('Respuesta contiene id', function () { const r = pm.response.json(); pm.expect(r).to.have.property('[campo_id]'); });"
+            "pm.test('Status crear producto', function () { pm.response.to.have.status(Number(pm.environment.get('status_maestro_create_ok'))); });",
+            "pm.test('Respuesta contiene ID generado', function () { const r = pm.response.json(); pm.expect(r).to.have.any.keys('id', 'id_producto', 'success'); });"
           ] } }]
         },
         {
-          "name": "Crear registro invalido",
+          "name": "Crear producto invalido",
           "request": {
             "method": "POST",
             "header": [
@@ -88,14 +88,14 @@
               { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/{{endpoint_maestro_create}}",
-            "body": { "mode": "raw", "raw": "{\n  \"[campo_codigo]\": \"\",\n  \"[campo_nombre]\": \"\"\n}" }
+            "body": { "mode": "raw", "raw": "{\n  \"id_prenda\": \"\",\n  \"descripcion\": \"\"\n}" }
           },
           "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
             "pm.test('Status crear invalido', function () { pm.response.to.have.status(Number(pm.environment.get('status_maestro_bad_request'))); });"
           ] } }]
         },
         {
-          "name": "Editar registro",
+          "name": "Editar producto",
           "request": {
             "method": "PUT",
             "header": [
@@ -103,30 +103,30 @@
               { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/{{endpoint_maestro_update}}/{{id_maestro}}",
-            "body": { "mode": "raw", "raw": "{\n  \"[campo_nombre]\": \"{{nombre_editado}}\"\n}" }
+            "body": { "mode": "raw", "raw": "{\n  \"descripcion\": \"{{nombre_editado}}\"\n}" }
           },
           "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
-            "pm.test('Status editar maestro', function () { pm.response.to.have.status(200); });"
+            "pm.test('Status editar producto', function () { pm.response.to.have.status(200); });"
           ] } }]
         },
         {
-          "name": "Eliminar registro",
+          "name": "Eliminar producto",
           "request": {
             "method": "DELETE",
             "header": [{ "key": "Authorization", "value": "Bearer {{auth_token}}" }],
             "url": "{{base_url}}/{{endpoint_maestro_delete}}/{{id_maestro}}"
           },
           "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
-            "pm.test('Status eliminar maestro', function () { pm.expect([200,204]).to.include(pm.response.code); });"
+            "pm.test('Status eliminar producto', function () { pm.expect([200,204]).to.include(pm.response.code); });"
           ] } }]
         }
       ]
     },
     {
-      "name": "Transaccional",
+      "name": "Transaccional (Orders/Pedidos)",
       "item": [
         {
-          "name": "Registrar transaccion valida",
+          "name": "Registrar pedido valido",
           "request": {
             "method": "POST",
             "header": [
@@ -134,15 +134,15 @@
               { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/{{endpoint_transaccional_create}}",
-            "body": { "mode": "raw", "raw": "{\n  \"[campo_fk_maestra]\": \"{{id_maestra}}\",\n  \"[campo_monto]\": \"{{monto_valido}}\"\n}" }
+            "body": { "mode": "raw", "raw": "{\n  \"producto\": {{id_maestra}},\n  \"descripcion\": \"Pedido de prueba automatizado\",\n  \"estado\": 1\n}" }
           },
           "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
             "pm.test('Status transaccion valida', function () { pm.response.to.have.status(Number(pm.environment.get('status_trans_ok'))); });",
-            "pm.test('Contiene confirmacion', function () { const r = pm.response.json(); pm.expect(r).to.have.any.keys('[campo_id_transaccion]','[campo_estado]'); });"
+            "pm.test('Contiene confirmacion (ID o Estado)', function () { const r = pm.response.json(); pm.expect(r).to.have.any.keys('id', 'estado', 'success', 'message'); });"
           ] } }]
         },
         {
-          "name": "Registrar transaccion invalida",
+          "name": "Registrar pedido invalido",
           "request": {
             "method": "POST",
             "header": [
@@ -150,7 +150,7 @@
               { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/{{endpoint_transaccional_create}}",
-            "body": { "mode": "raw", "raw": "{\n  \"[campo_fk_maestra]\": \"{{id_maestra}}\",\n  \"[campo_monto]\": \"{{monto_invalido}}\"\n}" }
+            "body": { "mode": "raw", "raw": "{\n  \"producto\": null,\n  \"descripcion\": \"\"\n}" }
           },
           "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
             "pm.test('Status transaccion invalida', function () { pm.response.to.have.status(Number(pm.environment.get('status_trans_bad_request'))); });"

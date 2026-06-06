@@ -1,234 +1,306 @@
-# pruebas-[apellido1]-[apellido2]
+# pruebas-pino-longas
 
-Guia operativa para planificar, ejecutar y documentar pruebas de software sobre un proyecto web real con tres modulos:
+Repositorio de evidencias y ejecución de pruebas de software realizadas sobre el proyecto web **Jeanstyle**, siguiendo una estrategia de validación por fases.
+
+## Módulos evaluados
 
 1. Login
-2. Modulo maestro CRUD
-3. Modulo transaccional
-
-Este repositorio ya esta separado por fases. La documentacion base esta creada, pero varios artefactos todavia tienen placeholders o estan pendientes de cierre final.
-
-## Tabla de contenido
-
-1. Descripcion general de la actividad
-2. Herramientas requeridas
-3. Estructura del repositorio
-4. Fase 1 - Planificacion y criterios de aceptacion
-5. Fase 2 - Pruebas unitarias con JUnit 5
-6. Fase 3 - Pruebas funcionales con Selenium IDE
-7. Fase 4 - Pruebas de API con Postman
-8. Fase 5 - Pruebas de base de datos con MySQL Workbench
-9. Fase 6 - Pruebas de seguridad con OWASP ZAP
-10. Scripts SQL paso a paso
-11. Casos de prueba
-12. Plantilla de reporte de bugs
-13. Requisitos de evidencia anti-IA
-14. Checklist de entrega
-15. Criterios de calificacion
+2. Gestión de Productos (CRUD)
+3. Gestión de Pedidos (Orders)
 
-## 1. Descripcion general de la actividad
+---
 
-Esta actividad evalua la capacidad de dos estudiantes para planificar, ejecutar y documentar pruebas de software en 25 horas distribuidas en 6 fases.
+# Tabla de Contenido
 
-Objetivo general:
+1. Descripción General
+2. Herramientas Utilizadas
+3. Estructura del Repositorio
+4. Fase 1 - Planificación
+5. Fase 2 - Pruebas Unitarias
+6. Fase 3 - Pruebas Funcionales
+7. Fase 4 - Pruebas API
+8. Fase 5 - Pruebas de Base de Datos
+9. Fase 6 - Pruebas de Seguridad
+10. Casos de Prueba
+11. Reporte de Bugs
+12. Evidencias
+13. Checklist Final
 
-- Aplicar tecnicas de pruebas manuales y automatizadas sobre el sistema real del equipo.
+---
 
-Objetivos especificos:
+# 1. Descripción General
 
-- Elaborar plan de pruebas y criterios de aceptacion.
-- Ejecutar pruebas unitarias, funcionales, API, BD y seguridad.
-- Registrar evidencias verificables con marca de tiempo.
-- Reportar defectos con formato estandar.
-- Organizar artefactos en Git con estructura definida.
+El objetivo del proyecto fue planificar, ejecutar y documentar pruebas de software sobre la aplicación Jeanstyle utilizando herramientas de pruebas funcionales, unitarias, API, base de datos y seguridad.
 
-Distribucion de tiempo:
+Las actividades se organizaron en seis fases independientes para facilitar la trazabilidad de los resultados.
 
-| Fase | Actividad | Horas |
-|---|---|---|
-| 1 | Planificacion y criterios de aceptacion | 3 |
-| 2 | Pruebas unitarias con JUnit 5 | 5 |
-| 3 | Pruebas funcionales con Selenium IDE | 5 |
-| 4 | Pruebas de API con Postman | 4 |
-| 5 | Pruebas de BD con MySQL Workbench | 4 |
-| 6 | Pruebas de seguridad con OWASP ZAP | 2 |
-| - | Consolidacion, reporte final y video | 2 |
-| - | TOTAL | 25 |
+---
 
-## 2. Herramientas requeridas
+# 2. Herramientas Utilizadas
 
-| Herramienta | Uso |
-|---|---|
-| JUnit 5 | Pruebas unitarias backend |
-| Selenium IDE | Pruebas funcionales navegador |
-| Postman | Pruebas API REST |
-| MySQL Workbench | Pruebas de base de datos |
-| OWASP ZAP | Pruebas de seguridad |
-| OBS Studio | Grabacion de evidencias |
-| Git + GitHub/GitLab | Control de versiones y entrega |
+| Herramienta           | Uso                      |
+| --------------------- | ------------------------ |
+| Pytest                | Pruebas Unitarias        |
+| Selenium IDE          | Pruebas Funcionales      |
+| Postman               | Pruebas API              |
+| SQLite / SQLiteStudio | Validación Base de Datos |
+| OWASP ZAP             | Seguridad                |
+| VS Code               | Desarrollo               |
+| Git                   | Control de Versiones     |
 
-## 3. Estructura del repositorio
+---
 
-Se debe conservar esta estructura minima:
+# 3. Estructura del Repositorio
 
-- `01-planificacion/`
-- `02-pruebas-unitarias/`
-- `03-pruebas-funcionales/`
-- `04-pruebas-api/`
-- `05-base-de-datos/`
-- `06-seguridad/`
-- `07-entrega-final/`
+```text
+01-planificacion/
+02-pruebas-unitarias/
+03-pruebas-funcionales/
+04-pruebas-api/
+05-base-de-datos/
+06-seguridad/
+07-entrega-final/
+```
 
-Estado actual resumido:
+---
 
-- `01-planificacion/`: documentos base creados.
-- `02-pruebas-unitarias/`: clases de prueba creadas, pero aun con placeholders.
-- `03-pruebas-funcionales/`: suite y casos base creados; evidencias incompletas.
-- `04-pruebas-api/`: coleccion, environment, reporte y capturas base creadas.
-- `05-base-de-datos/`: scripts y capturas base creadas; falta adaptar nombres reales.
-- `06-seguridad/`: guia, reporte y capturas base creadas.
-- `07-entrega-final/`: reporte final y screencast parcial; falta el video de presentacion y los reportes de bugs completos.
+# 4. Fase 1 - Planificación
 
-Convencion de commits por fase:
+## Entregables
 
-- [FASE-1] Plan de pruebas y criterios de aceptacion
-- [FASE-2] Pruebas unitarias JUnit - modulo Login
-- [FASE-2] Pruebas unitarias JUnit - modulo Maestro
-- [FASE-2] Pruebas unitarias JUnit - modulo Transaccional
-- [FASE-3] Casos de prueba funcionales ejecutados y evidencias
-- [FASE-4] Coleccion Postman y reporte de API
-- [FASE-5] Scripts SQL y evidencias de base de datos
-- [FASE-6] Reporte OWASP ZAP
-- [FASE-7] Reporte final y videos
+* plan-de-pruebas.md
+* criterios-aceptacion.md
 
-## 4. Fase 1 - Planificacion y criterios de aceptacion
+## Resultado
 
-Entregables:
+Se definieron los criterios de aceptación para:
 
-- `01-planificacion/plan-de-pruebas.md`
-- `01-planificacion/criterios-aceptacion.md`
+* Login
+* Productos
+* Pedidos
 
-Regla minima:
+Estado:
 
-- Al menos 20 criterios en formato Dado/Cuando/Entonces.
+✅ Completada
 
-## 5. Fase 2 - Pruebas unitarias con JUnit 5
+---
 
-Alcance:
+# 5. Fase 2 - Pruebas Unitarias
 
-- Probar logica de negocio de Login, Maestro y Transaccional.
+## Casos cubiertos
 
-Minimos:
+### Autenticación
 
-- Al menos 5 metodos por clase.
-- Al menos 20 pruebas unitarias totales.
+* Login exitoso
+* Login inválido
 
-Nota actual:
+### Productos
 
-- Las clases Java existen, pero todavia usan ejemplos y placeholders en vez de la logica real del sistema.
+* Crear producto
+* Editar producto
+* Eliminar producto
 
-## 6. Fase 3 - Pruebas funcionales con Selenium IDE
+### Pedidos
 
-Entregables:
+* Crear pedido
+* Validar pedido inválido
 
-- `03-pruebas-funcionales/selenium-suite.side`
-- `03-pruebas-funcionales/casos-prueba-funcionales.md`
-- Evidencias por caso en `03-pruebas-funcionales/evidencias/`.
+## Herramienta
 
-Nota actual:
+Pytest
 
-- La separacion por carpeta ya existe, pero faltan capturas por cada caso ejecutado.
+## Evidencias
 
-## 7. Fase 4 - Pruebas de API con Postman
+```text
+02-pruebas-unitarias/evidencias/
+```
 
-Minimo esperado:
+Estado:
 
-- Requests de Login, Maestro y Transaccional con pruebas en `pm.test`.
-- Export de coleccion y environment:
-	- `04-pruebas-api/coleccion-postman.json`
-	- `04-pruebas-api/environment-postman.json`
+✅ Completada
 
-Nota actual:
+---
 
-- La coleccion existe, pero sigue usando variables y endpoints genericos.
+# 6. Fase 3 - Pruebas Funcionales
 
-## 8. Fase 5 - Pruebas de base de datos con MySQL Workbench
+## Herramienta
 
-Orden de ejecucion:
+Selenium IDE
 
-1. `05-base-de-datos/datos-prueba.sql`
-2. `05-base-de-datos/pruebas-integridad.sql`
-3. `05-base-de-datos/pruebas-transacciones.sql`
+## Casos ejecutados
 
-Nota actual:
+| Código | Caso              |
+| ------ | ----------------- |
+| CP-001 | Login exitoso     |
+| CP-002 | Login fallido     |
+| CP-003 | Crear producto    |
+| CP-004 | Editar producto   |
+| CP-005 | Eliminar producto |
+| CP-006 | Pedido válido     |
+| CP-007 | Pedido inválido   |
 
-- Los scripts estan separados, pero aun usan placeholders y necesitan adaptacion al esquema real.
+## Evidencias
 
-## 9. Fase 6 - Pruebas de seguridad con OWASP ZAP
+```text
+03-pruebas-funcionales/evidencias/
+```
 
-Entregables:
+Estado:
 
-- `06-seguridad/reporte-zap.html`
-- Evidencias en `06-seguridad/evidencias/`.
+✅ Completada
 
-## 10. Scripts SQL paso a paso
+---
 
-Todos los scripts usan placeholders y deben adaptarse a nombres reales:
+# 7. Fase 4 - Pruebas API
 
-- [tabla_usuarios]
-- [tabla_maestra]
-- [tabla_transaccional]
-- [campo_x]
+## Herramienta
 
-## 11. Casos de prueba
+Postman
 
-Los casos funcionales se ejecutan y se completan con:
+## Operaciones validadas
 
-- Resultado real
-- Estado (Paso, Fallo, Bloqueado)
+### Productos
 
-Archivo base:
+* GET
+* POST
+* PUT
+* DELETE
 
-- `03-pruebas-funcionales/casos-prueba-funcionales.md`
+### Orders
 
-## 12. Plantilla de reporte de bugs
+* POST
+* Validaciones
 
-Archivo base:
+## Archivos
 
-- `07-entrega-final/plantillas-reporte-bugs.md`
+```text
+04-pruebas-api/
+├── coleccion-postman.json
+└── environment-postman.json
+```
 
-Se esperan al menos 3 reportes de bug reales.
+Estado:
 
-## 13. Requisitos de evidencia anti-IA
+✅ Completada
 
-Reglas obligatorias:
+---
 
-- Capturas con hora visible del sistema.
-- SQL y pruebas apuntando al proyecto real.
-- Requests Postman con URLs reales del sistema.
-- Video screencast mostrando ejecucion real.
+# 8. Fase 5 - Pruebas Base de Datos
 
-## 14. Checklist de entrega
+## Herramienta
 
-Usar checklist de validacion final antes de enviar:
+SQLite
 
-- Estructura completa.
-- Evidencias completas.
-- Minimos de pruebas cumplidos.
-- Commits por fase realizados.
+## Actividades realizadas
 
-## 15. Criterios de calificacion
+* Inserción de datos de prueba.
+* Validación de claves foráneas.
+* Verificación de integridad.
+* Validación de pedidos y productos.
 
-Rubrica sugerida (ajustar a lineamientos del docente):
+## Evidencias
 
-- Fase 1: 15%
-- Fase 2: 20%
-- Fase 3: 20%
-- Fase 4: 15%
-- Fase 5: 15%
-- Fase 6: 10%
-- Entrega final y calidad de evidencia: 5%
+```text
+05-base-de-datos/
+```
 
-## Regla clave de adaptacion
+Estado:
 
-No dejar placeholders en entrega final. Todo valor entre corchetes debe ser reemplazado con informacion real del proyecto.
+✅ Completada
+
+---
+
+# 9. Fase 6 - Pruebas de Seguridad
+
+## Herramienta
+
+OWASP ZAP
+
+## Actividades
+
+* Escaneo automatizado.
+* Revisión de alertas.
+* Exportación de reporte HTML.
+
+## Archivos
+
+```text
+06-seguridad/
+├── reporte-zap.html
+└── evidencias/
+```
+
+Estado:
+
+✅ Completada
+
+---
+
+# 10. Casos de Prueba
+
+Los casos funcionales se encuentran en:
+
+```text
+03-pruebas-funcionales/casos-prueba-funcionales.md
+```
+
+Incluyen:
+
+* Resultado esperado.
+* Resultado real.
+* Estado de ejecución.
+
+---
+
+# 11. Reporte de Bugs
+
+Los defectos encontrados durante el proyecto se documentan en:
+
+```text
+07-entrega-final/reporte-bugs.md
+```
+
+Ejemplos encontrados:
+
+* database disk image is malformed
+* no such table users
+* no such column p.id_talla
+* no such column o.descripcion
+* database is locked
+
+---
+
+# 12. Evidencias
+
+Todas las evidencias incluyen:
+
+* Capturas de pantalla.
+* Reportes HTML.
+* Consultas SQL.
+* Ejecuciones Selenium.
+* Resultados Postman.
+* Reporte OWASP ZAP.
+
+---
+
+# 13. Checklist Final
+
+* [x] Plan de pruebas.
+* [x] Criterios de aceptación.
+* [x] Pruebas unitarias.
+* [x] Pruebas funcionales.
+* [x] Pruebas API.
+* [x] Pruebas base de datos.
+* [x] Pruebas de seguridad.
+* [x] Evidencias organizadas.
+* [x] Reporte final.
+
+---
+
+## Estado Final del Proyecto
+
+**Proyecto:** Jeanstyle
+
+**Estado:** Finalizado
+
+**Resultado:** Entrega lista para evaluación académica.

@@ -1,0 +1,114 @@
+# Fase 6 - Pruebas de Seguridad con OWASP ZAP
+
+## Objetivo
+
+Ejecutar un análisis básico de seguridad sobre la aplicación web utilizando OWASP ZAP para identificar vulnerabilidades y configuraciones inseguras.
+
+## Herramienta utilizada
+
+* OWASP ZAP 2.17.0
+* Ambiente: Local
+* URL evaluada: http://localhost:8080
+
+## Procedimiento ejecutado
+
+1. Se inició una sesión temporal en OWASP ZAP.
+2. Se ejecutó un escaneo automatizado sobre la aplicación.
+3. Se revisaron las alertas generadas por la herramienta.
+4. Se exportó el reporte HTML generado por ZAP.
+5. Se documentaron los hallazgos encontrados.
+
+## Evidencias
+
+### Evidencia 1: Escaneo ejecutado
+
+Archivo:
+
+```text
+evidencias/zap-escaneo.png
+```
+
+Descripción:
+
+Captura de pantalla del proceso de escaneo automatizado realizado sobre la aplicación.
+
+### Evidencia 2: Alertas encontradas
+
+Archivo:
+
+```text
+evidencias/zap-alertas.png
+```
+
+Descripción:
+
+Captura de pantalla de las vulnerabilidades detectadas por OWASP ZAP.
+
+### Evidencia 3: Reporte HTML
+
+Archivo:
+
+```text
+reporte-zap.html
+```
+
+Descripción:
+
+Reporte completo generado por OWASP ZAP con el detalle técnico de las vulnerabilidades encontradas.
+
+## Vulnerabilidades identificadas
+
+| Vulnerabilidad                           | Severidad     | Descripción                                                            |
+| ---------------------------------------- | ------------- | ---------------------------------------------------------------------- |
+| Cross Site Scripting (Reflected)         | Medium        | Posible ejecución de scripts inyectados por un usuario malicioso.      |
+| Missing Anti-clickjacking Header         | Low           | La aplicación puede ser cargada dentro de iframes externos.            |
+| Content Security Policy Header Not Set   | Low           | No existe una política CSP configurada.                                |
+| X-Content-Type-Options Header Missing    | Low           | El navegador podría interpretar incorrectamente el contenido recibido. |
+| Server Leaks Version Information         | Informational | El servidor expone información de versión en las respuestas HTTP.      |
+| Sub Resource Integrity Attribute Missing | Informational | Recursos externos sin validación de integridad.                        |
+
+## Recomendaciones
+
+### Cross Site Scripting (XSS)
+
+* Validar entradas de usuario.
+* Escapar caracteres especiales antes de renderizar contenido HTML.
+* Implementar Content Security Policy (CSP).
+
+### Clickjacking
+
+Agregar encabezado HTTP:
+
+```http
+X-Frame-Options: DENY
+```
+
+o
+
+```http
+Content-Security-Policy: frame-ancestors 'none';
+```
+
+### Content Security Policy
+
+Agregar encabezado:
+
+```http
+Content-Security-Policy: default-src 'self';
+```
+
+### X-Content-Type-Options
+
+Agregar encabezado:
+
+```http
+X-Content-Type-Options: nosniff
+```
+
+### Información del servidor
+
+Ocultar información de versión y detalles innecesarios en encabezados HTTP.
+
+## Conclusión
+
+Se ejecutó satisfactoriamente el análisis de seguridad utilizando OWASP ZAP. Se identificaron vulnerabilidades de severidad baja y media relacionadas principalmente con configuración de encabezados HTTP y riesgos potenciales de Cross Site Scripting (XSS). No se detectaron vulnerabilidades críticas. Se recomienda aplicar las medidas correctivas antes de desplegar la aplicación en ambientes productivos.

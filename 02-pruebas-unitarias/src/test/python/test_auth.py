@@ -17,7 +17,8 @@ sys.path.insert(0, project_root)
 from controllers.auth import (
     login, 
     create_user, 
-    find_user_by_email
+    find_user_by_email,
+    reset_failed_attempts
 )
 from controllers.utils import gen_2fa_code
 from config.settings import (
@@ -25,6 +26,7 @@ from config.settings import (
     MAX_FAILED_ATTEMPTS,
     SESSION_TIMEOUT_SECONDS
 )
+import controllers.auth as auth_module
 
 
 class TestLoginExitoso:
@@ -52,6 +54,19 @@ class TestLoginExitoso:
         )
         # Si el usuario ya existe, está bien, solo continuamos
         print(f"User creation result: {ok}, {msg}")
+        # Asegurar que usuario no está bloqueado y resetear intentos fallidos
+        usuario = find_user_by_email(self.email)
+        if usuario:
+            uid = usuario[0]
+            reset_failed_attempts(uid)
+            import sqlite3
+            db = sqlite3.connect(DB_PATH)
+            try:
+                cur = db.cursor()
+                cur.execute("UPDATE users SET blocked = 0, blocked_until = NULL WHERE id_usuario = ?", (uid,))
+                db.commit()
+            finally:
+                db.close()
     
     def test_login_exitoso(self):
         """
@@ -106,7 +121,7 @@ class TestPasswordIncorrecta:
         password_incorrecta = "PasswordIncorrecto123!"
         
         # Acción: Intentar login con password incorrecta
-        resultado, mensaje, token_2fa = login(email, password_incorrecta)
+        resultado, mensaje, token_2fa, _ = login(email, password_incorrecta, "127.0.0.1")
         
         # Validación 1: Login falla
         assert resultado is False, "Login no debería ser exitoso con password incorrecta"
@@ -145,11 +160,11 @@ class TestUsuarioBloqueado:
         
         # Acción: Ejecutar 3 intentos fallidos
         for i in range(3):
-            resultado, mensaje, _ = login(email, password_incorrecta)
+            resultado, mensaje, _, _ = login(email, password_incorrecta, "127.0.0.1")
             assert resultado is False, f"Intento {i+1}: Login debería fallar"
         
         # Acción: Intento 4 - Usuario debe estar bloqueado
-        resultado, mensaje, _ = login(email, password_incorrecta)
+        resultado, mensaje, _, _ = login(email, password_incorrecta, "127.0.0.1")
         
         # Validación 1: Login rechaza acceso (usuario bloqueado)
         assert resultado is False, "Acceso debería ser rechazado (usuario bloqueado)"
@@ -189,7 +204,7 @@ class TestUsuarioInactivo:
         password = "TestPassword123!"
         
         # Acción: Intentar login
-        resultado, mensaje, token_2fa = login(email, password)
+        resultado, mensaje, token_2fa, _ = login(email, password, "127.0.0.1")
         
         # Validación 1: Login es rechazado
         assert resultado is False, "Usuario inactivo debería ser rechazado"
@@ -222,25 +237,40 @@ class TestGeneracion2FA:
         email = "usuario.prueba@example.com"
         password = "TestPassword123!"
         
+        # Asegurar que el usuario no está bloqueado por tests previos
+        usuario = find_user_by_email(email)
+        if usuario:
+            uid = usuario[0]
+            reset_failed_attempts(uid)
+            import sqlite3
+            db = sqlite3.connect(DB_PATH)
+            try:
+                cur = db.cursor()
+                cur.execute("UPDATE users SET blocked = 0, blocked_until = NULL WHERE id_usuario = ?", (uid,))
+                db.commit()
+            finally:
+                db.close()
+
         # Acción: Login exitoso
-        resultado, mensaje, token_2fa = login(email, password)
+        resultado, mensaje, token, _ = login(email, password, "127.0.0.1")
         
         # Validación 1: Login exitoso
         assert resultado is True, f"Login falló: {mensaje}"
         
-        # Validación 2: Token 2FA existe
-        assert token_2fa is not None, "Token 2FA debería existir"
-        
-        # Validación 3: Token es de 6 dígitos
-        codigo_str = str(token_2fa)
+        # Validación 2: Se generó un token de sesión (identificador)
+        assert token is not None, "Token de sesión no fue generado"
+        # Extraer código 2FA desde la sesión pendiente
+        codigo = auth_module.SESSIONS.get(token, {}).get("pending_2fa")
+        assert codigo is not None, "Código 2FA no se encontró en la sesión"
+        codigo_str = str(codigo)
+        # Validación 3: Código es de 6 dígitos
         assert len(codigo_str) == 6, f"Código tiene {len(codigo_str)} dígitos, esperaba 6"
-        
-        # Validación 4: Token es numérico
+        # Validación 4: Código es numérico
         assert codigo_str.isdigit(), f"Token 2FA no es numérico: {codigo_str}"
-        
         # Validación 5: Token es aleatorio (generar 2 tokens seguidos)
-        resultado2, _, token_2fa_2 = login(email, password)
-        assert token_2fa != token_2fa_2, "Códigos 2FA deberían ser diferentes (aleatorios)"
+        resultado2, _, token2, _ = login(email, password, "127.0.0.1")
+        codigo2 = auth_module.SESSIONS.get(token2, {}).get("pending_2fa")
+        assert codigo != codigo2, "Códigos 2FA deberían ser diferentes (aleatorios)"
 
 
 class TestValidacion2FAExpiración:
@@ -261,7 +291,7 @@ class TestValidacion2FAExpiración:
         # Acción: Generar 10 códigos 2FA
         codigos = set()
         for _ in range(10):
-            codigo = generate_2fa_code()
+            codigo = gen_2fa_code()
             codigos.add(codigo)
             
             # Validación: Código es de 6 dígitos
